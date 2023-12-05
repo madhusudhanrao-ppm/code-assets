@@ -1,3 +1,3 @@
 # code-assets
-Code and Assetrs
+Code and Assets
 More details coming soon... 
