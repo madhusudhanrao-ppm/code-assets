@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $guestname = trim($guestname);
     $comment = trim($comment);
      // Avoid null inserts with space
-      if ($guestname != '' OR $comment != '')
+      if ($guestname != '' && $comment != '')
       {
       	$sqlIns = "INSERT INTO guests (guestname, comment) VALUES ('$guestname',  '$comment')";
       	if ($conn->query($sqlIns) === TRUE) {
