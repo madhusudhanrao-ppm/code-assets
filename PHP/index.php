@@ -91,16 +91,12 @@ else
 ?>
  
 
-    <div class="container">
-    <br/><br/><br/></br/><br/>
-    <br/><br/><br/></br/><br/>
-    <br/><br/><br/></br/><br/>
-    <h2 style="color:white">Comments</h2> 
+    <div class="container">  
     <table class="table" style="background-color:#F4F5F9">
         <thead>
         <tr>
             <th>Name</th>
-            <th>Comments</th> 
+            <th>Messages</th> 
         </tr>
         </thead>
         <tbody>
