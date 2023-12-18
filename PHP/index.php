@@ -70,16 +70,20 @@ else
 {
     ?>
     <div class="container">
-    <form method="post">  
-        <div class="form-group">
+    <form method="post">
+        <div class="col-md-6 form-group">
+
             <label for="Name">Name:</label>
             <input type="text" class="form-control" id="guestname" placeholder="Enter Name" name="guestname" value="<?php echo $guestname;?>" required=true>
-        </div>
-        <div class="form-group">
+       </div>
+       <div class="col-md-6 form-group">
             <label for="pwd">Comment:</label>
             <input type="text" class="form-control" id="comment" placeholder="Enter Comment" name="comment" value="<?php echo $comment;?>" required=true>
+
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>  
+        <div class="col-md-6 form-group">
+        <button type="submit" class="btn btn-default">Submit</button>
+        </div>
     </form>
     </div>
     <?php
