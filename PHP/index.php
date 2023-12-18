@@ -51,11 +51,19 @@ if ($conn->connect_error) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {  
     
-    $sqlIns = "INSERT INTO guests (guestname, comment) VALUES ('$guestname',  '$comment')";
-    if ($conn->query($sqlIns) === TRUE) {
-    echo "New record created successfully";
-    } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    $guestname = trim($guestname);
+    $comment = trim($comment);
+     // Avoid null inserts with space
+      if ($guestname != '' OR $comment != '')
+      {
+      	$sqlIns = "INSERT INTO guests (guestname, comment) VALUES ('$guestname',  '$comment')";
+      	if ($conn->query($sqlIns) === TRUE) {
+      	echo "New record created successfully";
+  	  } 
+    	else 
+    	{
+        		echo "Error: " . $sql . "<br>" . $conn->error;
+    	}
     }
 }
 else 
