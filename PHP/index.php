@@ -51,27 +51,39 @@ if ($conn->connect_error) {
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {  
     
-    $sqlIns = "INSERT INTO guests (guestname, comment) VALUES ('$guestname',  '$comment')";
-    if ($conn->query($sqlIns) === TRUE) {
-    echo "New record created successfully";
-    } else {
-    echo "Error: " . $sql . "<br>" . $conn->error;
+    $guestname = trim($guestname);
+    $comment = trim($comment);
+     // Avoid null inserts with space
+      if ($guestname != '' && $comment != '')
+      {
+      	$sqlIns = "INSERT INTO guests (guestname, comment) VALUES ('$guestname',  '$comment')";
+      	if ($conn->query($sqlIns) === TRUE) {
+      	echo "New record created successfully";
+  	  } 
+    	else 
+    	{
+        		echo "Error: " . $sql . "<br>" . $conn->error;
+    	}
     }
 }
 else 
 {
     ?>
     <div class="container">
-    <form method="post">  
-        <div class="form-group">
+    <form method="post">
+        <div class="col-md-6 form-group">
+
             <label for="Name">Name:</label>
             <input type="text" class="form-control" id="guestname" placeholder="Enter Name" name="guestname" value="<?php echo $guestname;?>" required=true>
-        </div>
-        <div class="form-group">
+       </div>
+       <div class="col-md-6 form-group">
             <label for="pwd">Comment:</label>
             <input type="text" class="form-control" id="comment" placeholder="Enter Comment" name="comment" value="<?php echo $comment;?>" required=true>
+
         </div>
-        <button type="submit" class="btn btn-default">Submit</button>  
+        <div class="col-md-6 form-group">
+        <button type="submit" class="btn btn-default">Submit</button>
+        </div>
     </form>
     </div>
     <?php
@@ -79,16 +91,12 @@ else
 ?>
  
 
-    <div class="container">
-    <br/><br/><br/></br/></br/>
-    <br/><br/><br/></br/></br/>
-    <br/><br/><br/></br/></br/>
-    <h2 style="color:white">Comments</h2> 
+    <div class="container">  
     <table class="table" style="background-color:#F4F5F9">
         <thead>
         <tr>
             <th>Name</th>
-            <th>Comments</th> 
+            <th>Messages</th> 
         </tr>
         </thead>
         <tbody>
