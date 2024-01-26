@@ -15,7 +15,7 @@ declare
                             "languageCode": "auto"  
                           } ],
                           "targetLanguageCode": "'||l_target_lang||'" ,
-                           "compartmentId": "ocid1.compartment.oc1..aaaaaaaXXXXXX54u32q"
+                           "compartmentId": "ocid1.compartment.oc1..YourCompartmentId"
                  
         }';    
          
