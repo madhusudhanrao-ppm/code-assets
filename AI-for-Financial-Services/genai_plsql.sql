@@ -1,3 +1,6 @@
+-- PL/SQL code block to Generate AI Text from Oracle Generative AI service
+-- Author: Madhusudhan Rao
+
 DECLARE
  
   l_genai_rest_url    VARCHAR2(4000) := 'https://inference.generativeai.us-chicago-1.oci.oraclecloud.com/20231130/actions/generateText'; 
