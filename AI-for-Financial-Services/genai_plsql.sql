@@ -4,7 +4,6 @@
 DECLARE
  
   l_genai_rest_url    VARCHAR2(4000) := 'https://inference.generativeai.us-chicago-1.oci.oraclecloud.com/20231130/actions/generateText'; 
-  -- https://generativeai.agents.aiservice.us-chicago-1.oci.oraclecloud.com -- check this 
   l_web_cred        CONSTANT VARCHAR2(50)   := '<Your Web Credentials>';   
   l_input varchar2(4000) := :P91_AI_INPUT; -- Change Input page number as per your page number in APEX page.
   l_response_json CLOB;
