@@ -12,9 +12,13 @@ SELECT * FROM V$VERSION;
 --  create user --
 
 create user john identified by johnpwd quota unlimited on users; 
-GRANT connect, resource to john;  
-GRANT db_developer_role to john;
+ 
+grant DB_DEVELOPER_ROLE to john;
+
+
 GRANT CREATE MLE TO john; 
+GRANT EXECUTE ON JAVASCRIPT TO john;  
+GRANT connect, resource to john; 
 commit;
 
 ---  01 ---- DEVELOPER AND JAVASCRIPT ROLES -------------
@@ -25,15 +29,14 @@ GRANT CREATE MLE TO john;
 ---- Connect as user john -------------
 ---- 02 ---------- SQL without FROM -------------------------------------------------------------------
 
-select sysdate 
+select sysdate; 
 select (31*22)+(22*34) calc;
 select user;
 
 ---- 03 ---------- IF NOT EXISTS -------------------------- 
 
 DROP table if exists johnshop purge;
-
-/* Table exists => do nothing; NOT create or replace */
+ 
 create table if not exists locations (
   different_colulmns json 
 );
@@ -66,20 +69,17 @@ johnshop
 (pizzaname, is_available);
 
 -- 06 --- Multi value Insert: ------------------------------------------------------------------
-
+ 
 insert into johnshop values
     ('Veg rolls', true),
     ('Spring rolls', false),
     ('Corn pepper Pizza', 1);  
 
-insert into johnshop values
-    ('Veg rolls', true),
-    ('Spring rolls', false),
-    ('Corn pepper Pizza', 1);  
+commit;
 
 select * from johnshop;
 
-commit;
+
 
 --- 07 --- Direct Joins for UPDATE and DELETE Statements ----------------------------------------
 
@@ -156,11 +156,11 @@ DROP table if exists pizzaitems purge;
 
 CREATE TABLE pizzaitems (itemname VARCHAR2(50), units_available number);
 
-INSERT INTO pizzaitems(itemname, units_available) VALUES ('Chicken', 1200);
-INSERT INTO pizzaitems(itemname, units_available) VALUES ('Paneer', 500);
-INSERT INTO pizzaitems(itemname, units_available) VALUES ('Corn', 300);
-INSERT INTO pizzaitems(itemname, units_available) VALUES ('Tomatoes', 1300);
-INSERT INTO pizzaitems(itemname, units_available) VALUES ('Red Chillies', 1300); 
+INSERT INTO pizzaitems(itemname, units_available) VALUES ('Chicken', 1700);
+INSERT INTO pizzaitems(itemname, units_available) VALUES ('Paneer', 1000);
+INSERT INTO pizzaitems(itemname, units_available) VALUES ('Corn', 800);
+INSERT INTO pizzaitems(itemname, units_available) VALUES ('Tomatoes', 1800);
+INSERT INTO pizzaitems(itemname, units_available) VALUES ('Red Chillies', 1800); 
 
 commit;
 
@@ -221,7 +221,8 @@ drop table if exists pizza_order;
 create table pizza_order
 ( 
     customer_id number,
-    order_item varchar2(100) annotations(display_size 'Medium Pizza', pizza_crust 'Thin', pizza_offer 'Festival Offer'), 
+    order_item varchar2(100) annotations(display_size 'Medium Pizza', 
+    pizza_crust 'Thin', pizza_offer 'Festival Offer'), 
     quantity number,
     order_date date default sysdate 
 )
@@ -249,7 +250,8 @@ commit;
  
 CREATE DOMAIN if not exists bank_loan_domain AS varchar2(50)
    CONSTRAINT bank_loan_domain_constr
-        CHECK (UPPER(VALUE) IN ('HOME-LOAN', 'CAR-LOAN', 'PERSONAL-LOAN', 'HOLIDAY-LOAN', 'STUDY-LOAN', 'BUSINESS-LOAN')) 
+        CHECK (UPPER(VALUE) IN ('HOME-LOAN', 'CAR-LOAN', 'PERSONAL-LOAN', 
+        'HOLIDAY-LOAN', 'STUDY-LOAN', 'BUSINESS-LOAN')) 
    DISPLAY SUBSTR(VALUE, 0, 12);
 
 create table if not exists loan_applications (
@@ -275,6 +277,14 @@ INSERT INTO LOAN_APPLICATIONS
 values (3, 'Mike Smith', 'CAR-LOAN', 25000);
  
 commit;
+
+drop domain if exists email_dom;
+
+create domain email_dom as varchar2(100)
+constraint email_chk check (regexp_like (email_dom, '^(\S+)\@(\S+)\.(\S+)$'))
+display lower(email_dom)
+order   lower(email_dom)
+annotations (Description 'Domain for Emails');
 
 -- 12 ----- SQL for Pattern Matching - Fuzzy Match --------------------------------
 
@@ -393,35 +403,35 @@ where SDO_WITHIN_DISTANCE(
 
 create or replace 
 function helloworldjs 
-return varchar2 
-as mle language javascript 
-q'~  
-    return 'Hello world';
-~';
-/
+    return varchar2 
+    as mle language javascript 
+    q'~  
+        return 'Hello world';
+    ~';
+    /
 
 select  helloworldjs as sayhello;
 
 create or replace 
-function hellouser ("username" varchar2) 
-return varchar2 
-as mle language javascript 
-q'~ 
-    return 'Hello world '+username;
-~';
-/
+    function hellouser ("username" varchar2) 
+    return varchar2 
+    as mle language javascript 
+    q'~ 
+        return 'Hello world '+username;
+    ~';
+    /
 
 select  hellouser ( 'Madhu' ) as sayhello;
 
 -- source code view ------
 create or replace 
-function simpleinterest ("P" number, "T" number, "R" number) 
-return number 
-as mle language javascript 
-q'~ 
-    return (P * T * R)/1200;
-~';
-/
+    function simpleinterest ("P" number, "T" number, "R" number) 
+    return number 
+    as mle language javascript 
+    q'~ 
+        return (P * T * R)/1200;
+    ~';
+    / 
 
 select round(simpleinterest ( 10000, 10, 5 ),2) as js_simp_int;
 
@@ -537,8 +547,8 @@ json_value(data, '$.shop_id') = 2;
 UPDATE shops_dv
 SET data = (' 
       { "_metadata" : 
-           { "etag" : "08047B9CEF4F88C347ED8F5126AFE503", 
-             "asof" : "0000000004F6734A"  }, 
+           { "etag" : "82978CBD3616ADDF85F5ECC8C8B7EF42", 
+             "asof" : "0000000005192515"  }, 
       "shop_id" : 2, 
       "shop_name" : 
       "Pops Burger n Pizza Shop", 
@@ -619,3 +629,165 @@ omitted, or set to NULL.
 ORA-06512: at "SYS.DBMS_SQL", line 1792
 */
 
+---20 Store JSON Column ------------
+
+create table movie_details
+(
+    ID  NUMBER primary key,
+    TITLE VARCHAR2(500),
+    MOVIE_META  JSON
+);
+
+insert into movie_details (id, title, movie_meta) values
+(
+    2,
+    'Indiana Jones and the Dial of Destiny', 
+    '{
+        "Director": "James Mangold",
+        "Genre": "Action-Adventure",
+        "ReleaseDate": "Jun 30, 2023",
+        "LeadActor": "Harrison Ford" 
+        }'
+);
+
+commit;
+
+select id, title, m.MOVIE_META.Director, m.MOVIE_META.Genre
+ from movie_details m;
+
+--- 21 Graph Queries -------------
+
+ WITH query as ( 
+    select 
+    SRC_ACCT_ID as source , 
+    DST_ACCT_ID as target  
+    from bank_transfers where DESCRIPTION = 'ML'
+    AND MERCHANT_STATE != 'United States of America'
+),
+page AS (
+    -- pagination
+    SELECT
+        *
+    FROM
+        query
+    ORDER BY
+        source,
+        target OFFSET :page_start ROWS FETCH NEXT :page_size ROWS ONLY
+        --target OFFSET 1 ROWS FETCH NEXT 100 ROWS ONLY
+),
+vertices AS (
+    -- fetch employee details and construct JSON
+    SELECT
+        JSON_OBJECT( 
+            'id' VALUE FINBANK_ACCOUNTS.ID,
+            'properties' VALUE JSON_OBJECT(
+                'FirstName' VALUE FINBANK_ACCOUNTS.FIRST_NAME,
+                'LastName' VALUE FINBANK_ACCOUNTS.LAST_NAME, 
+                'Department' VALUE FINBANK_ACCOUNTS.DEPARTMENT_ID,
+                'HireDate' VALUE FINBANK_ACCOUNTS.ACC_DATE,
+                'JobId' VALUE FINBANK_ACCOUNTS.JOB_ID,
+                'JobTitle' VALUE jobs.JOB_TITLE,
+                'MERCHANT_STATE' VALUE bank_transfers.MERCHANT_STATE,
+                'Amount' VALUE bank_transfers.Amount
+               
+            )
+        ) AS vertex
+    FROM
+        
+        FINBANK_ACCOUNTS finbank_accounts 
+        LEFT OUTER JOIN EBA_GRAPHVIZ_JOBS jobs ON finbank_accounts.JOB_ID = jobs.JOB_ID
+        LEFT OUTER JOIN BANK_TRANSFERS bank_transfers ON finbank_accounts.ID = bank_transfers.SRC_ACCT_ID  
+    WHERE
+        
+        bank_transfers.SRC_ACCT_ID in (
+            SELECT
+                source
+            from
+                page
+        )
+        or bank_transfers.DST_ACCT_ID in (
+            SELECT
+                target
+            from
+                page
+        )
+
+),
+edges AS (
+   
+    SELECT
+        JSON_OBJECT('source' VALUE source, 'target' VALUE target) AS edge
+    FROM
+        page
+)
+SELECT
+    -- construct the final JSON that GVT accepts.
+    JSON_OBJECT(
+        'vertices' VALUE (
+            SELECT
+                JSON_ARRAYAGG(vertex returning clob)
+            FROM
+                vertices
+        ),
+        'edges' VALUE (
+            SELECT
+                JSON_ARRAYAGG(edge returning clob)
+            FROM
+                edges
+        ),
+        'numResults' VALUE (
+            SELECT
+                COUNT(*)
+            FROM
+                query
+        ) returning clob
+    ) json
+FROM
+    SYS.DUAL
+
+--- 23 Blockchain Table -------------
+
+drop table if exists bct_t1 purge;
+
+create blockchain table bct_t1 (
+  id            number,
+  fruit         varchar2(20),
+  quantity      number,
+  created_date  date,
+  constraint bct_t1_pk primary key (id)
+)
+no drop until 0 days idle
+no delete until 16 days after insert
+hashing using "SHA2_512" version "v1";
+
+-- 24 XML Type ----------
+
+CREATE TABLE warehouses(
+  warehouse_id NUMBER(3),
+  warehouse_spec XMLTYPE,
+  warehouse_name VARCHAR2(35),
+  location_id NUMBER(4));
+
+INSERT INTO warehouses VALUES 
+   (       100, XMLType(
+              '<Warehouse whNo="100"> 
+               <Building>Owned</Building>
+               </Warehouse>'), 'Tower Records', 1003);
+
+select * from warehouses;
+
+commit;
+
+SELECT 
+  w.warehouse_spec.extract('/Warehouse/Building/text()')
+  .getStringVal() "Building"
+  FROM warehouses w;
+
+-- 25 --- FLOOR and CEIL on DATES
+
+
+select sysdate ,
+ceil(sysdate, 'iyyy') as cl, 
+ceil(78328.2234 ) as cl2,
+floor(sysdate, 'iyyy') as fl,
+floor(78328.2234) as fl2 ; 
