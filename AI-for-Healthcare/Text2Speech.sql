@@ -1,3 +1,5 @@
+-- Author Madhusudhan Rao from Oracle
+-- Acknowledgements: Thanks to Stevan Nichols from Oracle on Helping with Text 2 Speech AI PL/SQL REST API Invocation
 create or replace FUNCTION speech_synthesizespeech_uploadfile (v_text_input IN VARCHAR2, v_voice IN varchar2)  RETURN VARCHAR2
 --RETURN BLOB 
 AS 
