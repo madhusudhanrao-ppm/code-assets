@@ -56,7 +56,7 @@ BEGIN
     p_file_blob := dbms_cloud.get_response_raw(resp); 
 
     -- Upload file to OCI Object storage
-    x_object_store_url := 'https://objectstorage.us-phoenix-1.oraclecloud.com/n/oradbclouducm/b/medical_transcripts/o/Speech/'||v_filename;  
+    x_object_store_url := 'https://objectstorage.us-phoenix-1.oraclecloud.com/n/tenancy/b/bucketname/o/Speech/'||v_filename;  
 
     -- Set Mime Type of the file in the Request Header. 
     apex_web_service.g_request_headers.DELETE; 
