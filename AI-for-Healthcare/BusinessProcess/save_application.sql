@@ -26,18 +26,27 @@ l_workflow_id number;
 begin
     insert into BANK_CUSTOMERS (CUSTOMER_NAME, DOB, ACCOUNT_TYPE, ACCOUNT_NUMBER, GENDER, MARITAL_STATUS, REFERENCE_RELATION, REFERENCE_NAME,
     EDUCATIONAL_QUALIFICATION, OCCUPATION_TYPE, CUST_INCOME_LEVEL, STREET_ADDRESS, CITY, STATE_PROVINCE, CUST_POSTAL_CODE, PHONE_NUMBER, COUNTRY,
-    CURRENT_BALANCE, BANK_NAME, ACCOUNT_STATUS ) 
+    CURRENT_BALANCE, BANK_NAME  ) 
     values 
     (l_bank_customer, l_dob, 'Savings Bank', l_account_number, l_gender, l_martial_status, l_relation_ref, l_ref_name, l_edu_qualif, l_occ_type, l_income_level,
-    l_street, l_city, l_state, l_postcode, l_phone, l_country, 10000, l_bank, 'Initiated')
+    l_street, l_city, l_state, l_postcode, l_phone, l_country, 10000, l_bank )
     RETURNING ID INTO o_cust_id;  
 
     commit;
  
-   --- Invoke Workflow -------------------  
-   --  Code to Invoke Workflow (Later) -----------
+   --- Invoke Workflow -------------------
+   l_workflow_id := 
+    apex_workflow.start_workflow 
+      (p_static_id      => 'MYBANKWF',
+       p_detail_pk      => o_cust_id,
+       p_initiator      => UPPER(l_user),
+       p_parameters     => apex_workflow.t_workflow_parameters
+                            (1 => apex_workflow.t_workflow_parameter(static_id => 'P_ACCOUNT_NUMBER', string_value => l_account_number),
+                             2 => apex_workflow.t_workflow_parameter(static_id => 'P_CUSTOMER_ID', string_value => o_cust_id),
+                             3 => apex_workflow.t_workflow_parameter(static_id => 'P_CUSTOMER_NAME', string_value => l_bank_customer),
+                             4 => apex_workflow.t_workflow_parameter(static_id => 'P_INCOME_LEVEL', string_value => l_income_level)),
+       p_debug_level => apex_debug.c_log_level_info);
 
-    -- Optionally Return Temporary Customer ID ( or an Application ID)
-    -- :P58_CUST_ID is Oracle APEX Page Item
+    :P58_ACCOUNT_NUMBER := l_account_number;
     :P58_CUST_ID := o_cust_id;
 end;
