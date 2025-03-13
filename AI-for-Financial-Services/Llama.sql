@@ -56,7 +56,7 @@ into l_base64_content
                      {
                         "type": "IMAGE",
                         "imageUrl": {
-                            "url": "data:image/png;base64, '||l_base64_content||'"
+                            "url": "data:image/png;base64,'||l_base64_content||'"
                         }
                      }   
                  ]
