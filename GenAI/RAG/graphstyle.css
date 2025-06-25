@@ -1,0 +1,39 @@
+{
+    "vertex": {
+        "size": 12, 
+        "label": "${properties.Prompt}",  
+        "color": "${interpolate.discrete('properties.TID', 'blue', 'green', 'red', '#244f54', '#449287', '#62b3b7', '#ffda40', '#dda831', '#e96e4c', '#e8b4af', '#b3b3b3', '#333333')}",  
+        "icon": "fa-user",
+        "legend": "${properties.Filename}", 
+        "children": {
+            "salary": {
+                "size": 8, 
+                "color": "${interpolate.color('properties.CitationCount', 'white', '#FB8500')}",
+                "icon": {
+                    "class": "fa-book",
+                    "color": "green"
+                },
+                "border": {
+                    "width": 1,
+                    "color": "#FB8500"
+                }
+            }
+        }
+    },
+    "vertex[properties.Country]": {
+        "children": {
+            "flag": {
+                "size": 10,
+                "image": {
+                    "url": "https://flagcdn.com/40x30/${(properties.Country === 'UK' ? 'GB' : properties.Country).toLowerCase()}.png",
+                    "scale": 0.8
+                },
+                "color": "red"
+            }
+        }
+    },
+    "vertex[['VP', 'SWISS BANK', 'FI_MGR', 'AC_MGR', 'SA_MAN', 'PU_MAN', 'ST_MAN'].indexOf(properties.CitationCount) >= 0]": {
+        "icon": "fa-university",
+        "color": "red"
+    } 
+}
