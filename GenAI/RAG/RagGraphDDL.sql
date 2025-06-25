@@ -16,3 +16,12 @@
 	 CONSTRAINT "RAG_CITATIONS_ID_PK" PRIMARY KEY ("ID")
   USING INDEX  ENABLE
    ) ;
+
+SELECT
+    JSON_OBJECT(
+        'vertices' VALUE JSON_ARRAY(),
+        'edges' VALUE JSON_ARRAY(),
+        'numResults' VALUE 0
+    ) json
+FROM
+    SYS.DUAL
