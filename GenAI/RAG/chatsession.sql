@@ -1,5 +1,5 @@
 declare
-  c_agent_endpoint_id constant varchar2(1024) := 'ocid1.genaiagentendpoint.oc1.us-chicago-1.amaaaaaakn-Your-EndPoint-75edqbmu5a';
+  c_agent_endpoint_id constant varchar2(1024) := 'ocid1.genaiagentendpoint.oc1.us-chicago-1.Your-EndPoint';
   l_response clob;
   l_chat_session_id varchar2(200);
 begin
