@@ -16,7 +16,7 @@ begin
         || '/20240531/agentEndpoints/'
         || c_agent_endpoint_id
         || '/sessions'
-    , p_credential_static_id => 'Ind_OCI_WebCred'
+    , p_credential_static_id => 'Your-Oracle-APEX-Web-Credentials'
     , p_body => json_object(
         key 'displayName' value 'Tester'
         , key 'description' value 'Agent service tester'
