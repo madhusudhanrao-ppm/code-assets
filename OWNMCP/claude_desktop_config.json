@@ -1,0 +1,25 @@
+{
+  "mcpServers": { 
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "/Users/madhusudhanrao/Workarea/MCP/Old/MCPDB/mcp_oracledb/mcp_downloads"
+      ],
+      "restrictions": {
+        "maxFileSizeMB": 10,
+        "allowedExtensions": [".txt", ".md", ".csv", ".json", ".pdf"]
+      }
+    },
+    "fast-mcpserver": {
+      "command": "/Users/madhusudhanrao/.local/bin/uv",
+      "args": [
+        "--directory",
+        "/Users/madhusudhanrao/Workarea/ownmcp",
+        "run",
+        "server.py"
+      ]
+    }
+  }
+}
