@@ -1,0 +1,8 @@
+[project]
+name = "ownmcp-project"
+requires-python = ">=3.12"
+version = "0.1.0"
+dependencies = [
+    "fastapi-mcp>=0.4.0",
+    "fastmcp>=2.10.6",
+]
