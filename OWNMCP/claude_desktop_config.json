@@ -5,21 +5,25 @@
       "args": [
         "-y",
         "@modelcontextprotocol/server-filesystem",
-        "/Users/madhusudhanrao/Workarea/mcp_oracledb/mcp_downloads"
+        "/Users/madhusudhanrao/Workarea/MCP/Old/MCPDB/mcp_oracledb/mcp_downloads"
       ],
       "restrictions": {
         "maxFileSizeMB": 10,
         "allowedExtensions": [".txt", ".md", ".csv", ".json", ".pdf"]
       }
     },
-    "fast-mcpserver": {
+    "sqlcl": {
+      "command": "/Users/madhusudhanrao/Workarea/MCP/Old/sqlcl/bin/sql",
+      "args": ["-mcp"]
+    },
+    "oracle-generative-ai": {
       "command": "/Users/madhusudhanrao/.local/bin/uv",
       "args": [
         "--directory",
-        "/Users/madhusudhanrao/Workarea/ownmcp",
+        "/Users/madhusudhanrao/Workarea/mcpdemolangchain",
         "run",
-        "server.py"
+        "oracle_gen_ai_mcp_server.py"
       ]
-    }
+    } 
   }
 }
