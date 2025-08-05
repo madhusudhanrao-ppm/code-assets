@@ -10,7 +10,7 @@ mcp = FastMCP(name="Demo Server 🚀",host="0.0.0.0",port=8050)
 
 llm = ChatOCIGenAI(
     model_id="cohere.command-r-plus-08-2024", 
-    service_endpoint="https://inference.generativeai.sa-saopaulo-1.oci.oraclecloud.com",
+    service_endpoint="https://inference.generativeai.us-chicago-1.oci.oraclecloud.com",
     compartment_id="ocid1.compartment.oc1..aaaaaaaaud6yourcompartmentidmj54u32q", # replace with your OCID
 )
 
