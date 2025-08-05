@@ -12,6 +12,7 @@ llm = ChatOCIGenAI(
     model_id="cohere.command-r-plus-08-2024", 
     service_endpoint="https://inference.generativeai.us-chicago-1.oci.oraclecloud.com",
     compartment_id="ocid1.compartment.oc1..aaaaaaaaud6yourcompartmentidmj54u32q", # replace with your OCID
+    model_kwargs={"temperature": 0, "max_tokens": 256}
 )
 
 @mcp.tool()
